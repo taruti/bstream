@@ -22,17 +22,17 @@ func TestWriteBit(t *testing.T) {
 	}
 }
 
-func TestWriteOneByte(t *testing.T) {
+func TestWriteByte(t *testing.T) {
 	b := NewBStreamWriter(5)
-	b.WriteOneByte(0xff)
+	b.WriteByte(0xff)
 	if b.stream[0] != 255 {
 		t.Error("first byte error")
 	}
-	b.WriteOneByte(0xa0)
+	b.WriteByte(0xa0)
 	if b.stream[1] != 160 {
 		t.Error("second byte error")
 	}
-	b.WriteOneByte(0x00)
+	b.WriteByte(0x00)
 	if b.stream[2] != 0 {
 		t.Error("third byte error")
 	}
@@ -44,7 +44,7 @@ func TestWriteOneByte(t *testing.T) {
 func TestWriteCombo(t *testing.T) {
 	b := NewBStreamWriter(5)
 	b.WriteBit(one)
-	b.WriteOneByte(0xaa)
+	b.WriteByte(0xaa)
 	if b.stream[0] != 0xD5 || b.stream[1] != 0x00 {
 		t.Error("write bits wrong")
 	}
