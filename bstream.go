@@ -26,6 +26,10 @@ func NewBStreamWriter(nByte uint8) *BStream {
 	return &BStream{stream: make([]byte, 0, nByte), rCount: 8}
 }
 
+func (b *BStream) WriteBool(input bool) {
+	b.WriteBit(bit(input))
+}
+
 //WriteBit :
 func (b *BStream) WriteBit(input bit) {
 	if b.wCount == 0 {

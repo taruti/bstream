@@ -22,6 +22,14 @@ func TestWriteBit(t *testing.T) {
 	}
 }
 
+func TestWriteBool(t *testing.T) {
+	b := NewBStreamWriter(1)
+	b.WriteBool(true)
+	if b.stream[0] != 128 {
+		t.Error("first bit error")
+	}
+}
+
 func TestWriteByte(t *testing.T) {
 	b := NewBStreamWriter(5)
 	b.WriteByte(0xff)
