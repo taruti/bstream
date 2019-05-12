@@ -181,3 +181,8 @@ func (b *BStream) ReadBits(count int) (uint64, error) {
 func (b *BStream) Bytes() []byte {
 	return b.stream
 }
+
+// BitSize returns the size of the stream in bits.
+func (b *BStream) BitSize() int {
+	return 8*len(b.stream)-(int(b.wCount)+(8-int(b.rCount)))
+}

@@ -51,24 +51,42 @@ func TestWriteByte(t *testing.T) {
 
 func TestWriteCombo(t *testing.T) {
 	b := NewBStreamWriter(5)
+	if b.BitSize() != 0 {
+		t.Error("bitsize is wrong")
+	}
 	b.WriteBit(one)
+	if b.BitSize() != 1 {
+		t.Error("bitsize is wrong")
+	}
 	b.WriteByte(0xaa)
+	if b.BitSize() != 9 {
+		t.Error("bitsize is wrong")
+	}
 	if b.stream[0] != 0xD5 || b.stream[1] != 0x00 {
 		t.Error("write bits wrong")
 	}
 
 	c := NewBStreamWriter(5)
 	c.WriteBits(0xaa, 8)
+	if c.BitSize() != 8 {
+		t.Error("bitsize is wrong")
+	}
 	if c.stream[0] != 170 {
 		t.Error("write bits wrong.")
 	}
 
 	c.WriteBits(0x0a0a, 8)
+	if c.BitSize() != 16 {
+		t.Error("bitsize is wrong")
+	}
 	if c.stream[1] != 0x0a {
 		t.Error("write bit error when too few")
 	}
 
 	c.WriteBits(0x0a0a, 16)
+	if c.BitSize() != 32 {
+		t.Error("bitsize is wrong")
+	}
 	if len(c.stream) > 4 {
 		t.Error("write bit error when too much")
 	}
@@ -112,17 +130,29 @@ func TestWriteBits(t *testing.T) {
 	b.WriteBits(0xa5a5, 16)
 	b.WriteBits(0x07, 3)
 
+	if b.BitSize() != 19 {
+		t.Error("bitsize is wrong")
+	}
 	ret, err := b.ReadBits(12)
 	if err != nil || ret != 2650 {
 		t.Error("ReadBits error")
+	}
+	if b.BitSize() != 7 {
+		t.Error("bitsize is wrong")
 	}
 	ret, err = b.ReadBits(4)
 	if err != nil || ret != 5 {
 		t.Error("ReadBits second error")
 	}
+	if b.BitSize() != 3 {
+		t.Error("bitsize is wrong")
+	}
 	ret, err = b.ReadBits(3)
 	if err != nil || ret != 7 {
 		t.Error("ReadBits third error")
+	}
+	if b.BitSize() != 0 {
+		t.Error("bitsize is wrong")
 	}
 }
 
